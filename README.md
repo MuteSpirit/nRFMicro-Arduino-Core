@@ -1,4 +1,4 @@
-# Arduino Core for nRFMicro-like Boards
+# Arduino Core for nRFMicro like Boards
 
 This repository contains the Arduino BSP for nRFMicro-compatible boards:
 
@@ -11,11 +11,13 @@ This repository contains the Arduino BSP for nRFMicro-compatible boards:
 
 ### SuperMini nRF52840 / nice!Nano v2
 
-![SuperMini nRF52840 and nice!Nano v2 pinout](https://raw.githubusercontent.com/pdcook/nRFMicro-Arduino-Core/main/supermini_nicenano.png)
+![SuperMini nRF52840 and nice!Nano v2 pinout](https://raw.githubusercontent.com/MuteSpirit/nRFMicro-Arduino-Core/main/supermini_nicenano.png)
+
+![nRF52840 Pro Micro](nrf52840-pro-micro.png)
 
 ### nRFMicro
 
-![nRFMicro pinout](https://raw.githubusercontent.com/pdcook/nRFMicro-Arduino-Core/main/nrfmicro.png)
+![nRFMicro pinout](https://raw.githubusercontent.com/MuteSpirit/nRFMicro-Arduino-Core/main/nrfmicro.png)
 
 ## BSP Installation
 
@@ -28,7 +30,7 @@ There are two methods that you can use to install this BSP. We highly recommend 
  3. Go into Preferences
  4. Add into 'Additional Board Manager URL' (1st item is BSP, 2nd one is dependency tools):
 ```
-https://raw.githubusercontent.com/MuteSpirit/nRFMicro-Arduino-Core/main/package_nRFMicro_index.json
+https://github.com/MuteSpirit/nRFMicro-Arduino-Core/raw/refs/heads/main/package_nRFMicro_index.json
 https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
 ```
  5. Restart the Arduino IDE
@@ -50,7 +52,7 @@ https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
  5. Clone this repo & its submodules:
 
    ```
-   git clone https://github.com/pdcook/nRFMicro-Arduino-Core
+   git clone https://github.com/MuteSpirit/nRFMicro-Arduino-Core
    cd nRFMicro-Arduino-Core
    git submodule update --init
    ```
@@ -79,3 +81,28 @@ The following libraries are used:
 - [LittleFS](https://github.com/ARMmbed/littlefs) for internal file system
 - [nrfx](https://github.com/NordicSemiconductor/nrfx) for peripherals driver
 - [TinyUSB](https://github.com/hathach/tinyusb) as usb stack
+
+## Package Archive
+
+1. Create tar file
+```
+export VERSION=<version>
+# where <version> is bumped version
+
+cd ..
+tar --bzip2 -cvf ./nRFMicro-Arduino-Core/archives/nRFMicro-Arduino-Core-$VERSION.tar.bz2 \
+    ./nRFMicro-Arduino-Core/variants \
+    ./nRFMicro-Arduino-Core/libraries \
+    ./nRFMicro-Arduino-Core/cores \
+    ./nRFMicro-Arduino-Core/tools \
+    ./nRFMicro-Arduino-Core/bootloader \
+    ./nRFMicro-Arduino-Core/boards.txt
+cd -
+```
+2. Figure out size and sha256 of it:
+```
+stat --format="%n size is %s bytes" ./archives/nRFMicro-Arduino-Core-$VERSION.tar.bz2
+sha256sum ./archives/nRFMicro-Arduino-Core-$VERSION.tar.bz2
+```
+3. Add new package info `package_nRFMicro_index.json`
+4. Update `package.json` if needed

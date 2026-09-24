@@ -1,11 +1,12 @@
 {
   "name": "nrfmicro-arduino",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Arduino core for nRFMicro-compatible boards",
   "keywords": [
     "arduino",
     "nordic semiconductor",
     "nrf52",
+    "nrf52840",
     "nrfmicro",
     "promicro",
     "nice!nano",
@@ -13,6 +14,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pdcook/nRFMicro-Arduino-Core"
+    "url": "https://github.com/MuteSpirit/nRFMicro-Arduino-Core"
   }
 }
