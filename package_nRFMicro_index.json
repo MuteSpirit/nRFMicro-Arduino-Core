@@ -155,10 +155,10 @@
           "help": {
             "online": "https://github.com/MuteSpirit/nRFMicro-Arduino-Core/blob/main/README.md"
           },
-          "url": "https://raw.githubusercontent.com/MuteSpirit/nRFMicro-Arduino-Core/main/archives/nRFMicro-Arduino-Core-1.0.3.tar.bz2",
+          "url": "https://github.com/MuteSpirit/nRFMicro-Arduino-Core/raw/refs/heads/main/archives/nRFMicro-Arduino-Core-1.0.3.tar.bz2",
           "archiveFileName": "nRFMicro-Arduino-Core-1.0.3.tar.bz2",
-          "checksum": "SHA-256:b7c27f269f62d16b7be1ced85acf5746efcbd1b94547bb332e76aca5abfeb05d",
-          "size": "17398391",
+          "checksum": "SHA-256:be8549db4f078a527b67e61d6e52b1434794dca18c1b7bd2838a1433fb24e813",
+          "size": "17411949",
           "boards": [{ "name": "nRFMicro" }, { "name": "SuperMini nRF52840" }, {"name": "nice!nano v2"}],
           "toolsDependencies": [
               { "packager": "Seeeduino", "name": "arm-none-eabi-gcc", "version": "9-2019q4" },

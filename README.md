@@ -36,6 +36,7 @@ https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
  5. Restart the Arduino IDE
  6. Open the Boards Manager from the Tools -> Board menu and install 'nRFMicro Boards'
  7. Once the BSP is installed, select 'nRFMicro' or 'SuperMini nRF52840' from the Tools -> Board menu, which will update your system config to use the right compiler and settings for the nRF52.
+ 8. Install Adafruit's nrfutil tools also (see section below)
 
 ### Optional (Core Development): BSP via git
 
@@ -91,12 +92,19 @@ export VERSION=<version>
 
 cd ..
 tar --bzip2 -cvf ./nRFMicro-Arduino-Core/archives/nRFMicro-Arduino-Core-$VERSION.tar.bz2 \
+    --exclude=".git*" \
+    --exclude=".codespell*" \
     ./nRFMicro-Arduino-Core/variants \
     ./nRFMicro-Arduino-Core/libraries \
     ./nRFMicro-Arduino-Core/cores \
     ./nRFMicro-Arduino-Core/tools \
     ./nRFMicro-Arduino-Core/bootloader \
-    ./nRFMicro-Arduino-Core/boards.txt
+    ./nRFMicro-Arduino-Core/scripts \
+    ./nRFMicro-Arduino-Core/boards.txt \
+    ./nRFMicro-Arduino-Core/keywords.txt \
+    ./nRFMicro-Arduino-Core/package.json \
+    ./nRFMicro-Arduino-Core/platform.txt \
+    ./nRFMicro-Arduino-Core/programmers.txt
 cd -
 ```
 2. Figure out size and sha256 of it:
