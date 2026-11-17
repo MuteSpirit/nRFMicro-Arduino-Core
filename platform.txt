@@ -41,7 +41,13 @@ compiler.S.cmd=arm-none-eabi-gcc
 compiler.S.flags=-mcpu={build.mcu} -mthumb -mabi=aapcs {compiler.optimization_flag} -g -c {build.float_flags} -x assembler-with-cpp
 
 compiler.cpp.cmd=arm-none-eabi-g++
-compiler.cpp.flags=-mcpu={build.mcu} -mthumb -c -g {compiler.warning_flags} {build.float_flags} -std=gnu++2a -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD
+# -fno-char8_t: GCC 9 with -std=gnu++2a enables the char8_t keyword while ETL
+# only provides char_traits_types<char8_t> specializations in C++20 mode, which
+# breaks etl/char_traits.h and etl/string_view.h. -DETL_NO_SMALL_CHAR_SUPPORT
+# makes ETL typedef uint_least8_t char8_t instead.
+# Can be overridden in platform.local.txt
+compiler.etl_flags=-fno-char8_t -DETL_NO_SMALL_CHAR_SUPPORT=1
+compiler.cpp.flags=-mcpu={build.mcu} -mthumb -c -g {compiler.warning_flags} {build.float_flags} -std=gnu++2a {compiler.etl_flags} -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD
 compiler.ar.cmd=arm-none-eabi-ar
 compiler.ar.flags=rcs
 compiler.objcopy.cmd=arm-none-eabi-objcopy

@@ -5,3 +5,7 @@
 [submodule "libraries/Adafruit_nRFCrypto"]
 	path = libraries/Adafruit_nRFCrypto
 	url = git@github.com:adafruit/Adafruit_nRFCrypto.git
+
+[submodule "libraries/Embedded_Template_Library_ETL"]
+	path = libraries/Embedded_Template_Library_ETL
+	url = https://github.com/ETLCPP/etl-arduino.git
