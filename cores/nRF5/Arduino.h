@@ -85,9 +85,10 @@ void resumeLoop(void);
 #include "wiring_shift.h"
 #include "WInterrupts.h"
 
-// undefine stdlib's abs if encountered
+// redefine stdlib's abs if encountered
 #ifdef abs
 #undef abs
+#define abs(x) ((x)>0?(x):-(x))
 #endif // abs
 
 #ifdef __cplusplus
@@ -117,9 +118,11 @@ void resumeLoop(void);
 #endif
 #endif
 
-#define abs(x) ((x)>0?(x):-(x))
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#ifdef round
+#undef round
 #define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+#endif
 #define radians(deg) ((deg)*DEG_TO_RAD)
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
