@@ -29,7 +29,8 @@ compiler.warning_flags.more=-Wall -Werror=return-type
 compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith
 
 # Allow changing optimization settings via platform.local.txt / boards.local.txt
-compiler.optimization_flag=-Ofast
+# But by default lets optimize firmware size because more or less big project extended board flash
+compiler.optimization_flag=-Os
 
 compiler.path={runtime.tools.arm-none-eabi-gcc.path}/bin/
 compiler.c.cmd=arm-none-eabi-gcc
@@ -75,7 +76,7 @@ compiler.elf2hex.extra_flags=
 compiler.arm.cmsis.c.flags="-I{runtime.tools.CMSIS-5.7.0.path}/CMSIS/Core/Include/" "-I{runtime.tools.CMSIS-5.7.0.path}/CMSIS/DSP/Include/"
 compiler.arm.cmsis.ldflags="-L{runtime.tools.CMSIS-5.7.0.path}/CMSIS/DSP/Lib/GCC/" -larm_cortexM4lf_math
 
-# common compiler for nrf
+# common compiler for nRF
 rtos.path={build.core.path}/freertos
 nordic.path={build.core.path}/nordic
 
