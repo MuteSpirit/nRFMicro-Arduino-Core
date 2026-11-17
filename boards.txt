@@ -46,6 +46,15 @@ supermini.menu.softdevice.s140v6.build.sd_name=s140
 supermini.menu.softdevice.s140v6.build.sd_version=7.3.0
 supermini.menu.softdevice.s140v6.build.sd_fwid=0x0123
 
+# Build without SoftDevice: app linked at 0x1000 (right after MBR),
+# burn bootloader-only image without SoftDevice via J-Link programmer
+supermini.menu.softdevice.none=Without SoftDevice (nosd)
+supermini.menu.softdevice.none.build.sd_fwid=0xFFFE
+supermini.menu.softdevice.none.build.ldscript=nrf52840_nosd.ld
+supermini.menu.softdevice.none.build.flags.softdevice=
+supermini.menu.softdevice.none.build.bootloader_file_suffix=_nosd
+supermini.menu.softdevice.none.upload.maximum_size=995328
+
 # Debug Menu
 supermini.menu.debug.l0=Level 0 (Release)
 supermini.menu.debug.l0.build.debug_flags=-DCFG_DEBUG=0
@@ -100,6 +109,15 @@ nicenanov2.menu.softdevice.s140v6=S140 6.1.1
 nicenanov2.menu.softdevice.s140v6.build.sd_name=s140
 nicenanov2.menu.softdevice.s140v6.build.sd_version=6.1.1
 nicenanov2.menu.softdevice.s140v6.build.sd_fwid=0x0123
+
+# Build without SoftDevice: app linked at 0x1000 (right after MBR),
+# burn bootloader-only image without SoftDevice via J-Link programmer
+nicenanov2.menu.softdevice.none=Without SoftDevice (nosd)
+nicenanov2.menu.softdevice.none.build.sd_fwid=0xFFFE
+nicenanov2.menu.softdevice.none.build.ldscript=nrf52840_nosd.ld
+nicenanov2.menu.softdevice.none.build.flags.softdevice=
+nicenanov2.menu.softdevice.none.build.bootloader_file_suffix=_nosd
+nicenanov2.menu.softdevice.none.upload.maximum_size=995328
 
 # Debug Menu
 nicenanov2.menu.debug.l0=Level 0 (Release)
@@ -156,6 +174,15 @@ nrfmicro.menu.softdevice.s140v6=S140 7.3.0
 nrfmicro.menu.softdevice.s140v6.build.sd_name=s140
 nrfmicro.menu.softdevice.s140v6.build.sd_version=7.3.0
 nrfmicro.menu.softdevice.s140v6.build.sd_fwid=0x0123
+
+# Build without SoftDevice: app linked at 0x1000 (right after MBR),
+# burn bootloader-only image without SoftDevice via J-Link programmer
+nrfmicro.menu.softdevice.none=Without SoftDevice (nosd)
+nrfmicro.menu.softdevice.none.build.sd_fwid=0xFFFE
+nrfmicro.menu.softdevice.none.build.ldscript=nrf52840_nosd.ld
+nrfmicro.menu.softdevice.none.build.flags.softdevice=
+nrfmicro.menu.softdevice.none.build.bootloader_file_suffix=_nosd
+nrfmicro.menu.softdevice.none.upload.maximum_size=995328
 
 # Debug Menu
 nrfmicro.menu.debug.l0=Level 0 (Release)

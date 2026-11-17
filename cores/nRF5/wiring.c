@@ -19,9 +19,10 @@
 
 #include "Arduino.h"
 #include "nrf.h"
+#ifdef SOFTDEVICE_PRESENT
 #include "nrf_nvic.h"
-
 nrf_nvic_state_t nrf_nvic_state;
+#endif
 
 #define DFU_MAGIC_SERIAL_ONLY_RESET   0x4e
 #define DFU_MAGIC_UF2_RESET           0x57
@@ -76,8 +77,10 @@ uint32_t readResetReason(void)
 
 static void reset_mcu(uint32_t gpregret)
 {
+#ifdef SOFTDEVICE_PRESENT
   // disable SD
   sd_softdevice_disable();
+#endif
 
   // Disable all interrupts
   NVIC->ICER[0]=0xFFFFFFFF;
@@ -124,7 +127,9 @@ void waitForEvent(void)
 #endif
 
   uint8_t sd_en = 0;
+#ifdef SOFTDEVICE_PRESENT
   (void) sd_softdevice_is_enabled(&sd_en);
+#endif
 
 #ifdef NRF_CRYPTOCELL
   // manually clear CryptoCell else it could prevent low power mode
@@ -133,7 +138,13 @@ void waitForEvent(void)
 
   if ( sd_en )
   {
+#ifdef SOFTDEVICE_PRESENT
     (void) sd_app_evt_wait();
+#else
+    __WFE();
+    __SEV(); // Clear Event Register.
+    __WFE();
+#endif
   }else
   {
     // SoftDevice is not enabled.
@@ -162,12 +173,20 @@ void systemOff(uint32_t pin, uint8_t wake_logic)
   }
 
   uint8_t sd_en;
+#ifdef SOFTDEVICE_PRESENT
   (void) sd_softdevice_is_enabled(&sd_en);
+#else
+  sd_en = 0;
+#endif
 
   // Enter System OFF state
   if ( sd_en )
   {
+#ifdef SOFTDEVICE_PRESENT
     sd_power_system_off();
+#else
+    NRF_POWER->SYSTEMOFF = 1;
+#endif
   }else
   {
     NRF_POWER->SYSTEMOFF = 1;
@@ -179,10 +198,16 @@ float readCPUTemperature( void )
 {
   uint8_t en;
   int32_t temp;
+#ifdef SOFTDEVICE_PRESENT
   (void) sd_softdevice_is_enabled(&en);
-  if (en) 
+#else
+  en = 0;
+#endif
+  if (en)
   {
+#ifdef SOFTDEVICE_PRESENT
     sd_temp_get(&temp);
+#endif
   }
   else
   {

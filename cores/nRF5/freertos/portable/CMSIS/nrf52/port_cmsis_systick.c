@@ -31,7 +31,9 @@
 #include "task.h"
 //#include "app_util.h"
 //#include "nrf_log.h"
+#ifdef SOFTDEVICE_PRESENT
 #include "nrf_nvic.h"
+#endif
 
 #define ROUNDED_DIV(A, B) (((A) + ((B) / 2)) / (B))
 

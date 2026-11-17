@@ -21,8 +21,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
+#ifdef SOFTDEVICE_PRESENT
 #include "nrf_soc.h"
 #include "nrf_sdm.h"
+#endif
 #include "nrf_gpio.h"
 
 #ifdef __cplusplus

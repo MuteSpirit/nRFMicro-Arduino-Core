@@ -24,8 +24,10 @@
 
 #include "flash_nrf5x.h"
 #include "flash_cache.h"
+#ifdef SOFTDEVICE_PRESENT
 #include "nrf_sdm.h"
 #include "nrf_soc.h"
+#endif
 #include "delay.h"
 #include "rtos.h"
 
@@ -104,6 +106,7 @@ bool flash_nrf5x_erase(uint32_t addr)
 //--------------------------------------------------------------------+
 static bool fal_erase (uint32_t addr)
 {
+#ifdef SOFTDEVICE_PRESENT
   // Init semaphore for first call
   if ( _sem == NULL )
   {
@@ -124,12 +127,23 @@ static bool fal_erase (uint32_t addr)
   (void) sd_softdevice_is_enabled(&sd_en);
 
   if ( sd_en ) xSemaphoreTake(_sem, portMAX_DELAY);
+#else
+  // No SoftDevice: erase via NVMC registers directly
+  NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Een;
+  NRF_NVMC->ERASEPAGE = (addr / FLASH_NRF52_PAGE_SIZE) * FLASH_NRF52_PAGE_SIZE;
+  while ( !NRF_NVMC->READY ) {}
+  NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren;
+#endif
 
   return true;
 }
 
 static uint32_t fal_program (uint32_t dst, void const * src, uint32_t len)
 {
+  // always called with whole aligned page, see flash_cache_flush()
+  uint32_t const* p_word = (uint32_t const*) src;
+
+#ifdef SOFTDEVICE_PRESENT
   // wait for async event if SD is enabled
   uint8_t sd_en = 0;
   (void) sd_softdevice_is_enabled(&sd_en);
@@ -139,7 +153,7 @@ static uint32_t fal_program (uint32_t dst, void const * src, uint32_t len)
   // Somehow S140 v6.1.1 assert an error when writing a whole page
   // https://devzone.nordicsemi.com/f/nordic-q-a/40088/sd_flash_write-cause-nrf_fault_id_sd_assert
   // Workaround: write half page at a time.
-#if NRF52832_XXAA
+  #if NRF52832_XXAA
   while ( NRF_ERROR_BUSY == (err = sd_flash_write((uint32_t*) dst, (uint32_t const *) src, len/4)) )
   {
     delay(1);
@@ -147,7 +161,7 @@ static uint32_t fal_program (uint32_t dst, void const * src, uint32_t len)
   VERIFY_STATUS(err, 0);
 
   if ( sd_en ) xSemaphoreTake(_sem, portMAX_DELAY);
-#else
+  #else
   while ( NRF_ERROR_BUSY == (err = sd_flash_write((uint32_t*) dst, (uint32_t const *) src, len/8)) )
   {
     delay(1);
@@ -161,6 +175,18 @@ static uint32_t fal_program (uint32_t dst, void const * src, uint32_t len)
   }
   VERIFY_STATUS(err, 0);
   if ( sd_en ) xSemaphoreTake(_sem, portMAX_DELAY);
+  #endif
+#else
+  // No SoftDevice: program via NVMC registers directly
+  NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen;
+
+  for(uint32_t i = 0; i < len; i += 4)
+  {
+    *(uint32_t*) (dst + i) = *p_word++;
+    while ( !NRF_NVMC->READY ) {}
+  }
+
+  NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren;
 #endif
 
   return len;

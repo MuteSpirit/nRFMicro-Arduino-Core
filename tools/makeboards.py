@@ -79,6 +79,14 @@ def build_header(mcu, name, variant, vendor_name, product_name, boarddefine, vid
     print()
 
 
+# Flash size available to a nosd application: bootloader base - MBR size
+NOSD_MAX_SIZE = {
+    52832: 0x74000 - 0x1000,
+    52833: 0x74000 - 0x1000,
+    52840: 0xF4000 - 0x1000,
+}
+
+
 def build_softdevice(mcu, name):
     print("# Menu: SoftDevice")
     if mcu == 52832:
@@ -96,6 +104,14 @@ def build_softdevice(mcu, name):
         print(f"{name}.menu.softdevice.s140v6.build.sd_name=s140")
         print(f"{name}.menu.softdevice.s140v6.build.sd_version=6.1.1")
         print(f"{name}.menu.softdevice.s140v6.build.sd_fwid=0x00B6")
+    # Build without SoftDevice: app linked at 0x1000 (right after MBR),
+    # burn bootloader-only image without SoftDevice via J-Link programmer
+    print(f"{name}.menu.softdevice.none=Without SoftDevice (nosd)")
+    print(f"{name}.menu.softdevice.none.build.sd_fwid=0xFFFE")
+    print(f"{name}.menu.softdevice.none.build.ldscript={mcu}_nosd.ld")
+    print(f"{name}.menu.softdevice.none.build.flags.softdevice=")
+    print(f"{name}.menu.softdevice.none.build.bootloader_file_suffix=_nosd")
+    print(f"{name}.menu.softdevice.none.upload.maximum_size={NOSD_MAX_SIZE.get(mcu, 995328)}")
     print()
 
 

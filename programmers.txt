@@ -11,6 +11,12 @@ nrfjprog.program.cmd.windows={runtime.tools.nrfjprog.path}/nrfjprog.exe
 #nrfjprog.program.cmd.windows=nrfjprog.exe
 
 # Burn bootloader pattern
+# NOTE: this is the only way to burn a bootloader without SoftDevice
+# (Tools > SoftDevice > Without SoftDevice (nosd)): the merged hex in
+# bootloader/<variant>/ named *_nosd.hex contains MBR + bootloader only and
+# --chiperase erases the SoftDevice previously burned on the chip.
+# Serial DFU (adafruit-nrfutil) can NOT remove a SoftDevice, it can only
+# replace/keep one.
 nrfjprog.program.burn_pattern="{program.cmd}" --program "{bootloader.file}.hex" -f nrf52 --chiperase --reset
 
 # Jlink to upload sketch

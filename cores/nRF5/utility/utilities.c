@@ -39,8 +39,10 @@
 #include <string.h>
 #include <stdio.h>
 
+#ifdef SOFTDEVICE_PRESENT
 #include "nrf_sdm.h"
 #include "nrf52/nrf_mbr.h"
+#endif
 
 
 /******************************************************************************/
@@ -73,6 +75,7 @@ const char* getBootloaderVersion(void)
   // Skip if already created
   if ( fw_str[0] == 0 )
   {
+#ifdef SOFTDEVICE_PRESENT
     uint32_t const sd_id      = SD_ID_GET(MBR_SIZE);
     uint32_t const sd_version = SD_VERSION_GET(MBR_SIZE);
 
@@ -81,6 +84,10 @@ const char* getBootloaderVersion(void)
     uint32_t const ver3 = sd_version % 1000;
 
     sprintf(fw_str, "s%lu %lu.%lu.%lu", sd_id, ver1, ver2, ver3);
+#else
+    // No SoftDevice flashed
+    sprintf(fw_str, "nosd");
+#endif
   }
 
   return fw_str;

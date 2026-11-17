@@ -59,7 +59,9 @@ int PDMClass::begin(int channels, long sampleRate)
 
   // Enable high frequency oscillator if not already enabled
   uint8_t sd_en = 0;
+#ifdef SOFTDEVICE_PRESENT
   sd_softdevice_is_enabled(&sd_en);
+#endif
 
   if (sd_en)
   {
